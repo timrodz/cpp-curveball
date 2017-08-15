@@ -1,0 +1,18 @@
+﻿/* SIE CONFIDENTIAL
+PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+* Copyright (C) 2012 Sony Interactive Entertainment Inc.
+* All Rights Reserved.
+*/
+
+SamplerState texState : register(s0);
+Texture2D tex : register( t0 );
+float4 colorCoeff;
+
+float4 main(
+	float2 vTexCoord	: TEXCOORD0
+	
+	)  : S_TARGET_OUTPUT
+{
+	float4 col = tex.Sample(texState, vTexCoord.xy);
+	return col * colorCoeff;
+}

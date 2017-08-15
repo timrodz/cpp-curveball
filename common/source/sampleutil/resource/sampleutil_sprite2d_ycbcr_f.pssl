@@ -1,0 +1,44 @@
+﻿/*
+* SIE CONFIDENTIAL 
+* PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001 
+* Copyright (C) 2013 Sony Interactive Entertainment Inc. 
+* All Rights Reserved.
+*/
+
+struct VpOut
+{
+	float4 pos       : S_POSITION;
+	float2 uv        : TEXCOORD0;
+};
+
+struct FpOut
+{
+	float4 color     : S_TARGET_OUTPUT;
+};
+
+Texture2D yTexture       : register(t0);
+
+SamplerState ySampler    : register(s0);
+
+Texture2D cbcrTexture    : register(t1);
+
+SamplerState cbcrSampler : register(s1);
+
+FpOut main( VpOut fragment )
+{
+
+	FpOut result;
+
+	float3 ycbcr =
+		float3( 1.1643 * (yTexture.Sample(ySampler, fragment.uv).x - 0.0625),
+			cbcrTexture.Sample(cbcrSampler, fragment.uv).x - 0.5,
+			cbcrTexture.Sample(cbcrSampler, fragment.uv).y - 0.5 );
+
+	result.color = 
+		float4( dot(float3(1.0f, 0.0f, 1.5958f), ycbcr), // R
+			dot(float3(1.0f, -0.39173f, -0.81290f), ycbcr), // G
+			dot(float3(1.0f, 2.017f, 0.0f), ycbcr), // B
+			1.0f );
+
+	return result;
+}

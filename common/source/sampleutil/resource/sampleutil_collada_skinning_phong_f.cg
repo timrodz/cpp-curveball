@@ -1,0 +1,60 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+ * Copyright (C) 2012 Sony Interactive Entertainment Inc. 
+ * All Rights Reserved.
+ */
+
+struct vertexOutput {
+    float4 Position	: POSITION;
+    float2 texcoord	: TEXCOORD0;
+
+    float3 LightVec	    : TEXCOORD5;
+    float3 WorldNormal	: TEXCOORD6;
+    float3 WorldView	: TEXCOORD7;
+};
+
+void phong_shading(float4 LightColor,
+				   float3 Nn,
+				   float3 Ln,
+				   float3 Vn,
+				   float SpecExpon, 
+				   float4 Kspecular,
+				   out float4 DiffuseContrib,
+				   out float4 SpecularContrib)
+{
+    float3 Hn       = normalize(Vn + Ln);
+    float4 litV     = lit(dot(Ln,Nn), dot(Hn,Nn), SpecExpon);
+    DiffuseContrib  = litV.y * LightColor;
+    SpecularContrib = litV.y * litV.z * Kspecular * LightColor;
+}
+
+float4 main(vertexOutput IN,
+              uniform sampler2D emissionTexture : TEXUNIT0, 
+              uniform sampler2D ambientTexture : TEXUNIT1, 
+              uniform sampler2D diffuseTexture : TEXUNIT2, 
+              uniform sampler2D specularTexture : TEXUNIT3, 
+			  uniform float3    light0Color,
+			  uniform float4    ambientColor,
+			  uniform float4    diffuseColor, 
+			  uniform float4    emissionColor, 
+			  uniform float     shininess,
+			  uniform float4    specularColor
+              ) : COLOR 
+{
+	float4 emission = emissionColor + tex2D(emissionTexture, IN.texcoord);
+	float4 ambient  = ambientColor + tex2D(ambientTexture, IN.texcoord);
+	float4 diffuse  = diffuseColor + tex2D(diffuseTexture, IN.texcoord);
+	float4 specular = specularColor + tex2D(specularTexture, IN.texcoord);
+
+    float4 diffContrib;
+    float4 specContrib;
+    float3 Ln = normalize(IN.LightVec);
+    float3 Vn = normalize(IN.WorldView);
+    float3 Nn = normalize(IN.WorldNormal);
+
+	phong_shading(float4(light0Color,1.0), Nn, Ln, Vn, shininess, specular, diffContrib, specContrib);
+
+	float4 result = emission + specContrib + (diffuse * (diffContrib + ambient));
+	float4 ret = float4(result.rgb,  diffuse.a);
+	return ret;
+}

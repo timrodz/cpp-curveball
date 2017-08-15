@@ -1,0 +1,50 @@
+﻿/*
+* SIE CONFIDENTIAL 
+* PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001 
+* Copyright (C) 2013 Sony Interactive Entertainment Inc. 
+* All Rights Reserved.
+*/
+
+struct VpIn
+{
+	uint vid	: S_VERTEX_ID;
+};
+
+struct VpOut
+{
+	float4 pos	: S_POSITION;
+	float2 uv	: TEXCOORD0;
+};
+
+float2 GetPosition4(uint vid){
+	const float2 position[4] = {
+		{-1.0f,  1.0f},
+		{-1.0f, -1.0f},
+		{1.0f,   1.0f},
+		{1.0f,  -1.0f},
+	};
+	return position[vid];
+}
+
+float2 GetTexturePosition4(uint vid){
+	const float2 texturePosition[4] = {
+		{0.0f, 0.0f},
+		{0.0f, 1.0f},
+		{1.0f, 0.0f},
+		{1.0f, 1.0f},
+	};
+	return texturePosition[vid];
+}
+
+VpOut main( VpIn vertex )
+{
+
+	VpOut result;
+
+	result.pos = float4( GetPosition4(vertex.vid), 0, 1 );
+
+	result.uv  = GetTexturePosition4( vertex.vid );
+
+	return result;
+
+}

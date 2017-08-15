@@ -1,0 +1,19 @@
+﻿/* SIE CONFIDENTIAL
+PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+* Copyright (C) 2012 Sony Interactive Entertainment Inc.
+* All Rights Reserved.
+*/
+
+#include "shader_base.h"
+
+struct VSCLEAR_OUT
+{
+	float4 m_position : S_POSITION;
+};
+
+VSCLEAR_OUT main( uint index : S_VERTEX_ID ) 
+{
+	VSCLEAR_OUT output = (VSCLEAR_OUT)0;
+	output.m_position = float4( -1.0+4.0*((index>>0)&1), -1.0+4.0*((index>>1)&1), 0, 1 );
+	return output;
+}

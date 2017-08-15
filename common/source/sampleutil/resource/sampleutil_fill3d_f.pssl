@@ -1,0 +1,48 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+ * Copyright (C) 2012 Sony Interactive Entertainment Inc. 
+ * All Rights Reserved.
+ */
+
+#include "shader_base.h"
+
+struct vertexOutput {
+    float4 Position	: S_POSITION;
+    float3 LightVec	    : TEXCOORD5;
+    float3 WorldNormal	: TEXCOORD6;
+    float3 WorldView	: TEXCOORD7;
+};
+
+void phong_shading(float3 Nn,
+				   float3 Ln,
+				   float3 Vn,
+				   float SpecExpon, 
+				   out float DiffuseContrib,
+				   out float SpecularContrib)
+{
+    float3 Hn       = normalize(Vn + Ln);
+    float4 litV     = lit(dot(Ln,Nn), dot(Hn,Nn), SpecExpon);
+    DiffuseContrib  = litV.y;
+    SpecularContrib = litV.y * litV.z;
+}
+
+
+float4 main(vertexOutput IN,
+			  uniform float4    color,
+			  uniform float		ambient,
+              uniform float		shininess
+              ) : S_TARGET_OUTPUT
+{
+    float diffContrib;
+    float specContrib;
+    float3 Ln = normalize(IN.LightVec);
+    float3 Vn = normalize(IN.WorldView);
+    float3 Nn = normalize(IN.WorldNormal);
+
+	phong_shading(Nn, Ln, Vn, shininess, diffContrib, specContrib);
+
+	float4 result = (diffContrib + ambient) * color + specContrib  * float4(1.0f,1.0f,1.0f,0.0f);
+	float4 ret = float4(result.rgb,  color.a);
+	return ret;
+}
+

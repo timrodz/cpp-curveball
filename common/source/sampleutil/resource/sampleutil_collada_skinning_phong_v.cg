@@ -1,0 +1,80 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+ * Copyright (C) 2012 Sony Interactive Entertainment Inc. 
+ * All Rights Reserved.
+ */
+
+/* data passed from vertex shader to pixel shader */
+struct vertexOutput {
+    float4 HPosition	: POSITION;
+    float2 texcoord	: TEXCOORD0;
+
+    float3 LightVec	    : TEXCOORD5;
+    float3 WorldNormal	: TEXCOORD6;
+    float3 WorldView	: TEXCOORD7;
+};
+ 
+///////// Vertex SHADING /////////////////////
+
+/*********** Generic Vertex Shader ******/
+
+float4x4 skinMatrices[64] : BUFFER[1];
+
+vertexOutput main(    float3 aPosition	: POSITION,
+                      float3 aNormal	: NORMAL,
+
+                      float2 aTexcoord	: TEXCOORD0,
+
+	                  short4 aBlendIndices : TEXCOORD4,
+
+		              short4 aBlendIndices4 : TEXCOORD5,
+
+	                  float4 aBlendWeights : TEXCOORD6,
+
+		              float4 aBlendWeights4 : TEXCOORD7,
+
+
+	                uniform float4x4 WorldInverseTranspose,
+                    uniform float4x4 WorldViewProjection,
+                    uniform float4x4 World, 
+                    uniform float4x4 ViewInverse,
+					  uniform float3   light0Position,
+	                uniform float4x4 bindShapeMatrix
+                    ) 
+{
+	float4x4 blend4
+		= skinMatrices[(int)aBlendIndices.x] * aBlendWeights.x
+		+ skinMatrices[(int)aBlendIndices.y] * aBlendWeights.y
+		+ skinMatrices[(int)aBlendIndices.z] * aBlendWeights.z
+		+ skinMatrices[(int)aBlendIndices.w] * aBlendWeights.w;
+
+    float4x4 blend3 
+		= skinMatrices[(int)aBlendIndices4.x] * aBlendWeights4.x
+		+ skinMatrices[(int)aBlendIndices4.y] * aBlendWeights4.y
+		+ skinMatrices[(int)aBlendIndices4.z] * aBlendWeights4.z
+		+ skinMatrices[(int)aBlendIndices4.w] * aBlendWeights4.w;
+	float4x4   blend = blend4 + blend3;
+
+	float4x4 blend2 = mul(bindShapeMatrix, blend);
+	//	blend2 =   skinMatrices[4] * (1-aBlendWeights.y) + skinMatrices[1] * aBlendWeights.y;
+	// apply skinning
+	float4 blendPosition = mul(blend2, float4(aPosition, 1.f));
+	float4 blendNormal   = mul(blend2, float4(aNormal, 0.f));
+
+    vertexOutput OUT;
+    float4 LocalPosition = float4(blendPosition.xyz,1);
+
+	OUT.WorldNormal      = mul(WorldInverseTranspose, blendNormal).xyz;
+
+    float3 WorldPosition = mul(World, LocalPosition).xyz;
+    OUT.LightVec         = (light0Position - WorldPosition);
+
+	OUT.texcoord.x = aTexcoord.x;
+	OUT.texcoord.y = 1.0 - aTexcoord.y;
+
+	OUT.WorldView        = normalize( float3(ViewInverse[0].w,ViewInverse[1].w,ViewInverse[2].w)  - WorldPosition);	
+    OUT.HPosition        = mul(WorldViewProjection, LocalPosition);
+    return OUT;
+}
+
+

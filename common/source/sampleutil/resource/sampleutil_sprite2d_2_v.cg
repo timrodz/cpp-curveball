@@ -1,0 +1,27 @@
+﻿/* SIE CONFIDENTIAL
+PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+* Copyright (C) 2012 Sony Interactive Entertainment Inc.
+* All Rights Reserved.
+*/
+
+void main(
+	float2 aPosition : POSITION,
+	float2 aTexcoord : TEXCOORD0,
+	out float4 oPosition : POSITION,
+    out float2 oTexcoord : TEXCOORD0,
+	uniform float depth
+	)
+{
+	float2 coord = aPosition;
+	float2 coord2 = coord * 2.0 - 1.0;
+
+	oPosition.x = coord2.x;
+	oPosition.y = - coord2.y;
+	oPosition.z = depth;
+	oPosition.w = 1.0f;
+
+	oTexcoord = aTexcoord;
+	//	oTexcoord.y = 1.0 - oTexcoord.y;
+}
+
+

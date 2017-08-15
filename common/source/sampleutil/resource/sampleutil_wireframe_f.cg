@@ -1,0 +1,16 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+ * Copyright (C) 2012 Sony Interactive Entertainment Inc. 
+ * All Rights Reserved.
+ */
+
+struct vertexOutput {
+    float4 Position	: POSITION;
+};
+
+float4 main(vertexOutput IN,
+            uniform float4 color
+            ) : COLOR 
+{
+	return color;
+}

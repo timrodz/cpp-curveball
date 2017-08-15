@@ -1,0 +1,40 @@
+﻿/* SIE CONFIDENTIAL
+PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+* Copyright (C) 2012 Sony Interactive Entertainment Inc.
+* All Rights Reserved.
+*/
+#include "shader_base.h"
+
+struct VS_INPUT
+{
+    float2 aPosition    : POSITION;
+};
+
+struct VS_OUTPUT
+{
+    float4 oPosition     : S_POSITION;
+	float oPsize : POINTSIZE;
+};
+
+unistruct cbConstants
+{
+	float	psize;
+	float depth;
+};
+
+VS_OUTPUT main( VS_INPUT input )
+{
+    VS_OUTPUT output;
+	float2 coord = input.aPosition;
+	float2 coord2 = coord * 2.0 - 1.0;
+
+	output.oPosition.x = coord2.x;
+	output.oPosition.y = - coord2.y;
+	output.oPosition.z =  depth;
+	output.oPosition.w	= 1.0f;
+
+	output.oPsize = psize;
+ 	return output;
+}
+
+

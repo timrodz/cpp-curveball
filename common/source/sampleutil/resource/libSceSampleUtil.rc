@@ -1,0 +1,90 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 日本語 (日本) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
+LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
+#pragma code_page(932)
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// CG
+//
+
+IDR_CG_COLLADA_SHADER_F CG                      "sampleutil_collada_skinning_phong_f.cg"
+IDR_CG_COLLADA_SHADER_V CG                      "sampleutil_collada_skinning_phong_v.cg"
+IDR_CG_SPRITE2D_SHADER_F CG                      "sampleutil_sprite2d_f.cg"
+IDR_CG_SPRITE2D_SHADER_V CG                      "sampleutil_sprite2d_v.cg"
+IDR_CG_SPRITE2D_SHADER_2_F CG                      "sampleutil_sprite2d_2_f.cg"
+IDR_CG_SPRITE2D_SHADER_2_V CG                      "sampleutil_sprite2d_2_v.cg"
+IDR_CG_SPRITE2D_YUY2_SHADER_F CG                      "sampleutil_sprite2d_yuy2_f.cg"
+IDR_CG_SPRITE2D_YUY2_SHADER_V CG                      "sampleutil_sprite2d_yuy2_v.cg"
+IDR_CG_FILL2D_SHADER_F  CG                      "sampleutil_fill2d_f.cg"
+IDR_CG_FILL2D_SHADER_V  CG                      "sampleutil_fill2d_v.cg"
+IDR_CG_FILL3D_SHADER_F  CG                      "sampleutil_fill3d_f.cg"
+IDR_CG_FILL3D_SHADER_V  CG                      "sampleutil_fill3d_v.cg"
+IDR_CG_POINT_SPRITE2D_SHADER_F CG                      "sampleutil_point_sprite2d_f.cg"
+IDR_CG_POINT_SPRITE2D_SHADER_V CG                      "sampleutil_point_sprite2d_v.cg"
+IDR_CG_WIREFRAME_SHADER_F CG                      "sampleutil_wireframe_f.cg"
+IDR_CG_WIREFRAME_SHADER_V CG                      "sampleutil_wireframe_v.cg"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// TGA
+//
+
+IDR_TEXTURE_SAMPLE_ASCII TGA                     "sampleutil_ascii.tga"
+#endif    // 日本語 (日本) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

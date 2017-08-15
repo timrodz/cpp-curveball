@@ -1,0 +1,19 @@
+﻿/* SIE CONFIDENTIAL
+PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+* Copyright (C) 2013 Sony Interactive Entertainment Inc.
+* All Rights Reserved.
+*/
+
+float4 main(
+	float4 oPosition : POSITION,
+
+	float2 vTexcoord	: TEXCOORD0,
+	uniform sampler2D tex : TEXUNIT0, 
+	uniform float4 colorCoeff
+	) : COLOR
+{
+	float4	color = tex2D(tex, vTexcoord);	
+   	float4	ret = color * colorCoeff;
+	return	ret;
+}
+

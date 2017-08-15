@@ -1,0 +1,25 @@
+﻿/* SIE CONFIDENTIAL
+PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+* Copyright (C) 2012 Sony Interactive Entertainment Inc.
+* All Rights Reserved.
+*/
+
+#include "shader_base.h"
+
+struct PS_OUT
+{
+	float4 Color : S_TARGET_OUTPUT0;
+};
+
+ConstantBuffer pix_clear_constants
+{
+	float4 m_color;
+};
+
+
+PS_OUT main()
+{
+	PS_OUT output = (PS_OUT)0;
+	output.Color = m_color;
+	return output;
+}

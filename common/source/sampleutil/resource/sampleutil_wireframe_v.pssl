@@ -1,0 +1,29 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+ * Copyright (C) 2012 Sony Interactive Entertainment Inc. 
+ * All Rights Reserved.
+ */
+
+#include "shader_base.h"
+
+/* data passed from vertex shader to pixel shader */
+struct vertexOutput {
+    float4 HPosition	: S_POSITION;
+};
+ 
+///////// Vertex SHADING /////////////////////
+
+/*********** Generic Vertex Shader ******/
+
+
+vertexOutput main(  float3 aPosition	: POSITION,
+                    uniform row_major matrix WorldViewProjection
+                    ) 
+{
+    vertexOutput OUT;
+    float4 LocalPosition = float4(aPosition, 1.f);
+    OUT.HPosition        = mul(WorldViewProjection, LocalPosition);
+    return OUT;
+}
+
+

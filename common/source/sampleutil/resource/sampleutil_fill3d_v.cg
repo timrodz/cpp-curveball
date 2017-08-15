@@ -1,0 +1,41 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+ * Copyright (C) 2012 Sony Interactive Entertainment Inc. 
+ * All Rights Reserved.
+ */
+
+/* data passed from vertex shader to pixel shader */
+struct vertexOutput {
+    float4 HPosition	: POSITION;
+    float3 LightVec	    : TEXCOORD5;
+    float3 WorldNormal	: TEXCOORD6;
+    float3 WorldView	: TEXCOORD7;
+};
+ 
+///////// Vertex SHADING /////////////////////
+
+/*********** Generic Vertex Shader ******/
+
+
+vertexOutput main(    float3 aPosition	: POSITION,
+                      float3 aNormal	: NORMAL,
+
+	                uniform float4x4 WorldInverseTranspose,
+                    uniform float4x4 WorldViewProjection,
+                    uniform float4x4 World, 
+                    uniform float4x4 ViewInverse,
+					uniform float3   lightPosition
+                    ) 
+{
+    vertexOutput OUT;
+	OUT.WorldNormal      = mul(WorldInverseTranspose, float4(aNormal, 0.0f) ).xyz;
+    float4 LocalPosition = float4(aPosition, 1.0f);
+
+    float3 WorldPosition = mul(World, LocalPosition).xyz;
+    OUT.LightVec         = (lightPosition - WorldPosition);
+	OUT.WorldView        = normalize( float3(ViewInverse[0].w,ViewInverse[1].w,ViewInverse[2].w)  - WorldPosition);	
+    OUT.HPosition        = mul(WorldViewProjection, LocalPosition);
+    return OUT;
+}
+
+

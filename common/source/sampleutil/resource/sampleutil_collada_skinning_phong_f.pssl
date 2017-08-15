@@ -1,0 +1,76 @@
+﻿/* SIE CONFIDENTIAL
+ * PlayStation(R)4 Programmer Tool Runtime Library Release 04.508.001
+ * Copyright (C) 2012 Sony Interactive Entertainment Inc. 
+ * All Rights Reserved.
+ */
+
+#include "shader_base.h"
+
+struct vertexOutput {
+    float4 Position	: S_POSITION;
+    float2 texcoord	: TEXCOORD0;
+
+	//float3 TmpColor     : TEXCOORD4;
+    float3 LightVec	    : TEXCOORD5;
+    float3 WorldNormal	: TEXCOORD6;
+    float3 WorldView	: TEXCOORD7;
+};
+
+void phong_shading(float4 LightColor,
+				   float3 Nn,
+				   float3 Ln,
+				   float3 Vn,
+				   float SpecExpon, 
+				   float4 Kspecular,
+				   out float4 DiffuseContrib,
+				   out float4 SpecularContrib)
+{
+    float3 Hn       = normalize(Vn + Ln);
+    float4 litV     = lit(dot(Ln,Nn), dot(Hn,Nn), SpecExpon);
+    DiffuseContrib  = litV.y * LightColor;
+    SpecularContrib = litV.y * litV.z * Kspecular * LightColor;
+}
+
+
+float4 main(vertexOutput IN,
+        uniform Texture2D emissionTexture : register( t0 ),
+        uniform Texture2D ambientTexture : register( t1 ), 
+        uniform Texture2D diffuseTexture : register( t2 ), 
+        uniform Texture2D specularTexture : register( t3 ), 
+			  uniform SamplerState emissionTexState	: register(s0),
+			  uniform SamplerState ambientTexState	: register(s1),
+			  uniform SamplerState diffuseTexState	: register(s2),
+			  uniform SamplerState specularTexState	: register(s3),
+
+
+			  uniform float3    light0Color,
+			  uniform float4    ambientColor,
+			  uniform float4    diffuseColor, 
+			  uniform float4    emissionColor, 
+			  uniform float     shininess,
+			  uniform float4    specularColor
+              ) : S_TARGET_OUTPUT
+{
+	float4 emission = emissionColor + emissionTexture.Sample(emissionTexState, IN.texcoord);
+	float4 ambient_t= ambientTexture.Sample(ambientTexState, IN.texcoord);
+	float4 ambient  = ambientColor + ambient_t;
+	float4 diffuse_t= diffuseTexture.Sample(diffuseTexState,	IN.texcoord);
+	float4 diffuse  = diffuseColor + diffuse_t;
+	float4 specular = specularColor +specularTexture.Sample(specularTexState, IN.texcoord);
+
+    float4 diffContrib;
+    float4 specContrib;
+    float3 Ln = normalize(IN.LightVec);
+    float3 Vn = normalize(IN.WorldView);
+    float3 Nn = normalize(IN.WorldNormal);
+
+	phong_shading(float4(light0Color,1.0), Nn, Ln, Vn, shininess, specular, diffContrib, specContrib);
+
+	float4 result = emission + specContrib + (diffuse * (diffContrib + ambient));
+	float4 ret = float4(result.rgb,  diffuse.a);
+	//float4 ret = float4(diffContrib.rgb,  diffuse.a);
+	//ret.r = IN.TmpColor.r;
+	//ret.g = IN.TmpColor.g;
+	//ret.a = 1.0;
+	return ret;
+}

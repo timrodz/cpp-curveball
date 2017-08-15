@@ -1,0 +1,36 @@
+﻿/* SIE CONFIDENTIAL
+ORBIS Programmer Tool Runtime Library Release 00.910.020
+* Copyright (C) 2012 Sony Interactive Entertainment Inc.
+* All Rights Reserved.
+*/
+
+float4 main(
+	float4 oPosition : POSITION,
+
+	float2 vTexcoord	: TEXCOORD0,
+	uniform sampler2D tex : TEXUNIT0, 
+	uniform float4 colorCoeff,
+    uniform float2 texSize	
+	) : COLOR
+{
+	float4 col;
+	{
+		float4 texel = tex2D(tex, vTexcoord);
+		float2 texcoord = vTexcoord * texSize;
+		float y = (frac(texcoord.x) < 0.5) ? texel.x : texel.z;
+		float u = texel.y;
+		float v = texel.w;
+		float3 yubof = float3(0.0, -0.5, -0.5);
+		float3 yuv2r = float3(1.0,  0.000,  1.402);
+		float3 yuv2g = float3(1.0, -0.344, -0.714);
+		float3 yuv2b = float3(1.0,  1.772,  0.000);
+		float3 yuv = float3(y, u, v);
+		yuv += yubof;
+		col.r = dot(yuv, yuv2r);
+		col.g = dot(yuv, yuv2g);
+		col.b = dot(yuv, yuv2b);
+		col.a = 1.0;
+	}
+	return col * colorCoeff;
+}
+

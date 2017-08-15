@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "demo_device_switch_game", "demo_device_switch_game.vcxproj", "{CD08BCE8-FAF4-4C7D-B3D5-ABA8248360C1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libSceSampleUtil", "..\..\common\source\sampleutil\libSceSampleUtil.vcxproj", "{30A1B994-C2C6-485F-911B-FB4674366DA8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ORBIS = Debug|ORBIS
+		Release|ORBIS = Release|ORBIS
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CD08BCE8-FAF4-4C7D-B3D5-ABA8248360C1}.Debug|ORBIS.ActiveCfg = Debug|ORBIS
+		{CD08BCE8-FAF4-4C7D-B3D5-ABA8248360C1}.Debug|ORBIS.Build.0 = Debug|ORBIS
+		{CD08BCE8-FAF4-4C7D-B3D5-ABA8248360C1}.Release|ORBIS.ActiveCfg = Release|ORBIS
+		{CD08BCE8-FAF4-4C7D-B3D5-ABA8248360C1}.Release|ORBIS.Build.0 = Release|ORBIS
+		{30A1B994-C2C6-485F-911B-FB4674366DA8}.Debug|ORBIS.ActiveCfg = Debug|ORBIS
+		{30A1B994-C2C6-485F-911B-FB4674366DA8}.Debug|ORBIS.Build.0 = Debug|ORBIS
+		{30A1B994-C2C6-485F-911B-FB4674366DA8}.Release|ORBIS.ActiveCfg = Release|ORBIS
+		{30A1B994-C2C6-485F-911B-FB4674366DA8}.Release|ORBIS.Build.0 = Release|ORBIS
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
