@@ -1,0 +1,89 @@
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+#include <kernel.h>
+#include <libsysmodule.h>
+
+#include <scream/sce_scream.h>
+
+#define BANK_NAME "/app0/audio_video/sound/wave/SwordFight.bnk"
+
+// System Declarations
+const char sceUserMainThreadName[] = "audio_example_main_thread";
+unsigned int sceLibcHeapSize = 16*1024*1024; // 16 MB
+
+
+// Memory Handling
+void* example_malloc(int32_t bytes, int32_t use)
+{
+    void* p;
+
+    p = malloc(bytes);
+    if (p) return p;
+    return NULL;
+}
+
+void example_free(void *memory)
+{
+    free(memory);
+}
+
+int main()
+{
+    // Load the NGS2 Module
+    int result = sceSysmoduleLoadModule( SCE_SYSMODULE_NGS2 );
+    if( result != SCE_OK )
+    {
+        printf( "initNGS2: sceSysmoduleLoadModule() failed: 0x%08X\n", 
+        result );
+    return -1;
+    }
+
+    // Initialize Scream
+    SceScreamPlatformInitEx2 screamInit;
+    memset(&screamInit, 0, sizeof(SceScreamPlatformInitEx2));
+    screamInit.size = sizeof(SceScreamPlatformInitEx2);   
+    sceScreamFillDefaultScreamPlatformInitArgsEx2(&screamInit);
+    screamInit.memAlloc = example_malloc;
+    screamInit.memFree = example_free;
+
+    result = sceScreamStartSoundSystemEx2(&screamInit);
+    if( result != 0 )
+    {
+        printf("sceScreamStartSoundSystemEx2 failed, returned %d\n", result );
+    }
+
+    // Load the tutorial Bank (BNK) file
+    SceScreamSFXBlock2 *screamBank = sceScreamBankLoadEx( (const char*) 
+        BANK_NAME, 0 );
+    if ( screamBank == NULL)
+    {
+        printf("sceScreamBankLoadEx failed.\n" );
+    }
+   
+    // Initialize a SceScreamSoundParams structure
+    SceScreamSoundParams soundParams;
+    memset(&soundParams, 0, sizeof(SceScreamSoundParams));
+    soundParams.size      = sizeof(SceScreamSoundParams);
+    soundParams.gain    = 1.0f;
+    soundParams.azimuth   = 0;
+    soundParams.mask = SCE_SCREAM_SND_MASK_GAIN|SCE_SCREAM_SND_MASK_PAN_AZIMUTH;
+
+  
+    // Play Sounds contained in the SwordFight.bnk file 
+    // with a 3-second delay between each Sound
+    sceScreamPlaySoundByNameEx(screamBank, "SwordFight-1", &soundParams);
+    sceKernelSleep(3);
+
+    sceScreamPlaySoundByNameEx(screamBank, "SwordFight-2", &soundParams);
+    sceKernelSleep(3);
+
+    sceScreamPlaySoundByNameEx(screamBank, "SwordFight-3", &soundParams);
+
+    // Terminate processing and unload the NGS2 module
+    sceScreamStopSoundSystem();
+    sceSysmoduleUnloadModule( SCE_SYSMODULE_NGS2 );
+
+    return 0;
+}
