@@ -17,7 +17,11 @@
 #include "select_players_scene.h"
 #include "game_main_scene.h"
 
+#include "AudioManager.h"
+
 size_t sceLibcHeapSize = 256 * 1024 * 1024;
+
+AudioManager am;
 
 class Application : public sce::SampleUtil::SampleSkeleton
 {
@@ -162,6 +166,7 @@ public:
 				{
 				case SCENE_ID_TITLE:
 					if(eventId == EVENT_ID_GO_FORWARD){
+						am.PlaySound("bugs_big_one");
 						ret = loadScene(SCENE_ID_SELECT_PLAYERS, NULL);
 					}
 					break;

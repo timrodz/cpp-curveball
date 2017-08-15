@@ -13,6 +13,9 @@
     <ClInclude Include="common.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AudioManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Header Files">
@@ -20,6 +23,9 @@
     </Filter>
     <Filter Include="Source Files">
       <UniqueIdentifier>{169b83b4-08f3-4302-816f-b37ca2d082ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{1d182f70-776e-4f22-bcbd-6f12bc814de8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -35,5 +41,13 @@
     <ClCompile Include="select_players_scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AudioManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="dankBank.bnk">
+      <Filter>Resources</Filter>
+    </None>
   </ItemGroup>
 </Project>
