@@ -8,6 +8,7 @@
 *.user
 *.userosscache
 *.sln.docstates
+*.db
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -23,6 +24,7 @@ bld/
 [Bb]in/
 [Oo]bj/
 [Ll]og/
+ORBIS_Debug/
 
 # Visual Studio 2015 cache/options directory
 .vs/
@@ -297,37 +299,3 @@ __pycache__/
 *.btm.cs
 *.odx.cs
 *.xsd.cs
-
-# UNI
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
-*.out
-*.app
-
-# Other, custom
-*~
-.DS_Store
-
-
-.deps
-Examples/.deps/
-test
-#test.cpp
-Examples/proxy_example
